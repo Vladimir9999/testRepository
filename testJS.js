@@ -33,9 +33,10 @@ class Publication {
 }
 
 class User {
-    constructor(FIO, pulications) {
+
+    constructor(FIO) {
         this._FIO = FIO;
-        this._pulications = pulications;
+        this.publications = [];
     }
 
     get FIO() {
@@ -47,11 +48,29 @@ class User {
     }
 
     get pulications() {
-        return this._pulications;
+        return this.pulications;
     }
 
-    set pulications(value) {
-        this._pulications = value;
+    addPublication(value)
+    {
+
+        this.publications.push(value);
+    }
+
+}
+
+class View
+{
+    viewUser(user){
+        document.getElementById("container").innerHTML += "ФИО: " + user.FIO + "";
+        document.getElementById("container").innerHTML += " Кол-во публикаций:" + user.publications.length;
     }
 }
 
+let pub = new Publication("The name", "The content"),
+    pub1 = new Publication("My public", "My content"),
+    user1 = new User("Мороз Владимир Николаевич");
+user1.addPublication(pub);
+user1.addPublication(pub1);
+let v = new View;
+v.viewUser(user1);
