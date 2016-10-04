@@ -37,6 +37,11 @@ class User {
     constructor(FIO) {
         this._FIO = FIO;
         this.publications = [];
+        if (arguments.length > 1)
+        {
+            for(let i = 1; i < arguments.length; i++)
+                this.publications.push(arguments[i])
+        }
     }
 
     get FIO() {
@@ -61,9 +66,12 @@ class User {
 
 class View
 {
-    static viewUser(container, user){
-        for (let i = 0; i < count_users; i++)
+    static viewUser(container,user,sortFunction){
+        for (let i = 0; i < user.length; i++)
         {
+            console.log(sortFunction)
+            if (sortFunction != undefined)
+                    users.sort(sortFunction);
             let count_pub = user[i].publications.length;
             container.innerHTML += "User: " + user[i].FIO + ";";
             container.innerHTML += " Count publication: " + count_pub;
@@ -73,26 +81,18 @@ class View
 }
 
 // Функция сортировки
-function sortFunction(a, b){
+let sort1 = function (a, b){
     return a.FIO.localeCompare(b.FIO);
 }
 
-let create_user = function(name)
-{
-    users[count_users] = new User(name);
-    for(let i = 0; i < arguments.length-1; i++)
-    users[count_users].addPublication(arguments[i]);
-    count_users++;
-}
 let users = [],
-    count_users = 0,
     pub1 = new Publication("The name", "The content"),
     pub2 = new Publication("My pub", "My content");
 for (let i = 6; i >= 0; i--)
-    create_user("user"+i, pub1, pub2);
+    users[i] = new User("user"+i, pub1, pub2);
 
-users.sort(sortFunction);
+
 
 let container = document.getElementById("container");
-View.viewUser(container, users);
+View.viewUser(container,users);
 
