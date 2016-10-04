@@ -67,11 +67,11 @@ class User {
 class View
 {
     static viewUser(container,user,sortFunction){
+        console.log(sortFunction)
+        if (sortFunction != undefined)
+            users.sort(sortFunction);
         for (let i = 0; i < user.length; i++)
         {
-            console.log(sortFunction)
-            if (sortFunction != undefined)
-                    users.sort(sortFunction);
             let count_pub = user[i].publications.length;
             container.innerHTML += "User: " + user[i].FIO + ";";
             container.innerHTML += " Count publication: " + count_pub;
@@ -81,15 +81,18 @@ class View
 }
 
 // Функция сортировки
-let sort1 = function (a, b){
+let sort_up = function (a, b){
     return a.FIO.localeCompare(b.FIO);
+}
+let sort_down = function (a, b){
+    return b.FIO.localeCompare(a.FIO);
 }
 
 let users = [],
     pub1 = new Publication("The name", "The content"),
     pub2 = new Publication("My pub", "My content");
-for (let i = 6; i >= 0; i--)
-    users[i] = new User("user"+i, pub1, pub2);
+for (let i = 6, j = 0; i >= 0; i--, j++)
+    users[j] = new User("user"+i, pub1, pub2);
 
 
 
