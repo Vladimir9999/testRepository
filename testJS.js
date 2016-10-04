@@ -61,16 +61,38 @@ class User {
 
 class View
 {
-    viewUser(user){
-        document.getElementById("container").innerHTML += "ФИО: " + user.FIO + "";
-        document.getElementById("container").innerHTML += " Кол-во публикаций:" + user.publications.length;
+    static viewUser(container, user){
+        for (let i = 0; i < count_users; i++)
+        {
+            let count_pub = user[i].publications.length;
+            container.innerHTML += "User: " + user[i].FIO + ";";
+            container.innerHTML += " Count publication: " + count_pub;
+            container.innerHTML += ";<br>";
+        }
     }
 }
 
-let pub = new Publication("The name", "The content"),
-    pub1 = new Publication("My public", "My content"),
-    user1 = new User("Мороз Владимир Николаевич");
-user1.addPublication(pub);
-user1.addPublication(pub1);
-let v = new View;
-v.viewUser(user1);
+// Функция сортировки
+function sortFunction(a, b){
+    return a.FIO.localeCompare(b.FIO);
+}
+
+let create_user = function(name)
+{
+    users[count_users] = new User(name);
+    for(let i = 0; i < arguments.length-1; i++)
+    users[count_users].addPublication(arguments[i]);
+    count_users++;
+}
+let users = [],
+    count_users = 0,
+    pub1 = new Publication("The name", "The content"),
+    pub2 = new Publication("My pub", "My content");
+for (let i = 6; i >= 0; i--)
+    create_user("user"+i, pub1, pub2);
+
+users.sort(sortFunction);
+
+let container = document.getElementById("container");
+View.viewUser(container, users);
+
