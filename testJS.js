@@ -66,8 +66,9 @@ class User {
 
 class View
 {
+
     static viewUser(container,user,sortFunction){
-        console.log(sortFunction)
+        container.innerHTML = "";
         if (sortFunction != undefined)
             users.sort(sortFunction);
         for (let i = 0; i < user.length; i++)
@@ -91,8 +92,16 @@ let sort_down = function (a, b){
 let users = [],
     pub1 = new Publication("The name", "The content"),
     pub2 = new Publication("My pub", "My content");
-for (let i = 6, j = 0; i >= 0; i--, j++)
-    users[j] = new User("user"+i, pub1, pub2);
+/*for (let i = 6, j = 0; i >= 0; i--, j++)
+    users[j] = new User("user"+i, pub1, pub2);*/
+
+    users[0] = new User("User5", pub1);
+    users[1] = new User("User1", pub1, pub1, pub1);
+    users[2] = new User("User0", pub1, pub2);
+    users[3] = new User("User3", pub2, pub1);
+    users[4] = new User("User7");
+    users[5] = new User("User4", pub1);
+    users[6] = new User("User2", pub1, pub2, pub2);
 
 
 
