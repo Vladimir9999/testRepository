@@ -68,13 +68,15 @@ class View
 {
 
     static viewUser(container,user,sortFunction){
+        let usersCopy = users.slice();
+        console.log(usersCopy[0].FIO);
         container.innerHTML = "";
         if (sortFunction != undefined)
-            users.sort(sortFunction);
-        for (let i = 0; i < user.length; i++)
+            usersCopy.sort(sortFunction);
+        for (let i = 0; i < usersCopy.length; i++)
         {
-            let count_pub = user[i].publications.length;
-            container.innerHTML += "User: " + user[i].FIO + ";";
+            let count_pub = usersCopy[i].publications.length;
+            container.innerHTML += "User: " + usersCopy[i].FIO + ";";
             container.innerHTML += " Count publication: " + count_pub;
             container.innerHTML += ";<br>";
         }
@@ -83,6 +85,7 @@ class View
 
 // Функция сортировки
 let sort_up = function (a, b){
+    console.log(a.FIO);
     return a.FIO.localeCompare(b.FIO);
 }
 let sort_down = function (a, b){
@@ -106,5 +109,8 @@ let users = [],
 
 
 let container = document.getElementById("container");
-View.viewUser(container,users);
+//View.viewUser(container,users);
+View.viewUser(container,users, sort_up);
+
+
 
