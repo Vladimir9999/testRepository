@@ -109,7 +109,7 @@ let users = [],
 
 
 let container = document.getElementById("container");
-//View.viewUser(container,users);
+View.viewUser(container,users);
 View.viewUser(container,users, sort_up);
 
 
