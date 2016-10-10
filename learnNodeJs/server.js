@@ -1,7 +1,7 @@
 var http = require('http');
 var fs = require('fs');
 var procces = require('process');
-var User = require('./User');
+
 var users = [];
 
 (function (){
