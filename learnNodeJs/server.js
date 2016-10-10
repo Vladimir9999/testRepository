@@ -16,19 +16,22 @@ stream.on('data', function (chunk) {
  */
 
 
-
-// стримы нод чтение и запись
 function getFile(req, res) {
     if (req.url === '/') req.url = '/index.html';
-    var stream = fs.createReadStream('./public' + req.url);
-    stream.on('data', function (chunk) {
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.write(chunk);
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    var stream = fs.createReadStream('./public' + req.url, {encoding: 'utf-8'});
+    stream.on('readable', function () {
+        var data = stream.read();
+        if (data != null)
+            res.write(data);
     });
     stream.on('end', function () {
-        res.end()
+        res.end();
+    })
+    stream.on('error', function () {
+        res.write('ERROR: 404 Not found');
+        res.end();
     });
-
 }
 function appGet(req, res, url) {
 
