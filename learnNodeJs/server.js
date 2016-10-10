@@ -2,18 +2,20 @@ var http = require('http');
 var fs = require('fs');
 var procces = require('process');
 
-var users = [];
+var users = [],
+    users_str = ' ';
 
 
-var stream = fs.createReadStream('./public/users.json');
+var stream = fs.createReadStream('./public/users.json', {encoding: 'utf-8'});
 stream.on('data', function (chunk) {
-    users = JSON.parse(chunk);
+    users_str += chunk;
+
 });
-/*
- fs.readFile('./public/users.json','utf8',  function(err, data){
- users = JSON.parse(data);
- });
- */
+
+stream.on('end', function () {
+    users = JSON.parse(users_str);
+});
+
 
 
 function getFile(req, res) {
