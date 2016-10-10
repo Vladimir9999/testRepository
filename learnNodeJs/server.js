@@ -9,7 +9,6 @@ var stream = fs.createReadStream('./public/users.json');
 stream.on('data', function (chunk) {
     users = JSON.parse(chunk);
 });
-
 /*
  fs.readFile('./public/users.json','utf8',  function(err, data){
  users = JSON.parse(data);
@@ -21,17 +20,15 @@ stream.on('data', function (chunk) {
 // стримы нод чтение и запись
 function getFile(req, res) {
     if (req.url === '/') req.url = '/index.html';
-    fs.readFile('./public' + req.url, 'utf8', function (err, data) {
+    var stream = fs.createReadStream('./public' + req.url);
+    stream.on('data', function (chunk) {
         res.writeHead(200, {'Content-Type': 'text/html'});
-        if (err) {
-            res.write('404: Not found');
-            res.end();
-        }
-        else {
-            res.write(data);
-            res.end();
-        }
+        res.write(chunk);
     });
+    stream.on('end', function () {
+        res.end()
+    });
+
 }
 function appGet(req, res, url) {
 
