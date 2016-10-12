@@ -22,8 +22,7 @@ var app = express();
 //app.use(bodyParser.json({ type: 'application/*+json' }));
 
 var routes = require('./routes/index');
-//var users = require('./routes/users');
-//app.use('/user', users);
+
 app.use('/', routes);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -75,6 +74,30 @@ app.get('/user/:id', function(req, res, next){
   });
 });
 
+// UPDATE user
+
+app.post('/user/:id', function (req, res, next) {
+  var postData = "";
+  req.addListener("data", function (postDataChunk) {
+    postData += postDataChunk;
+  });
+  req.addListener("end", function (err) {
+        User.findByIdAndUpdate(req.params.id, {FIO: postData}, function(err, user){
+          if(err){
+            res.send(err);
+          } else{
+            res.render('user added');
+          }
+        });
+  });
+
+});
+app.delete('/user/:id', function(req, res, next){
+  User.findByIdAndRemove(req.params.id, function(err) {
+    if (err) throw err;
+    console.log('User deleted!');
+  });
+});
 
 app.get('/', function(req, res, next){
   var path = 'index.html';
