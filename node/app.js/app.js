@@ -47,7 +47,11 @@ app.put('/user',function(req, res, next){
   });
 
   req.addListener("end", function () {
-    var obj = JSON.parse(postData);
+    var obj = bodyParse(postData);
+    if (!obj){
+      res.end("Error");
+      return;
+    }
     var user = new User({FIO: obj.FIO, publication: obj.publication});
     user.save(function(err, data){
       if(err){
@@ -84,7 +88,11 @@ app.post('/user/:id', function (req, res, next) {
     postData += postDataChunk;
   });
   req.addListener("end", function (err) {
-        var obj = JSON.parse(postData);
+        var obj = bodyParse(postData);
+        if (!obj){
+          res.end("Error");
+          return;
+        }
         User.findByIdAndUpdate(req.params.id, {FIO: obj.FIO, publication: obj.publication}, function(err, user){
           if(err){
             res.send(err);
@@ -127,7 +135,12 @@ app.put('/public',function(req, res, next){
   });
 
   req.addListener("end", function () {
-    var obj = JSON.parse(postData);
+    var obj = bodyParse(postData);
+    if (!obj){
+      res.end("Error");
+      return;
+    }
+
     var pub = new Publication({'name': obj.name, 'content': obj.content});
     pub.save(function(err, data){
       if(err){
@@ -145,7 +158,11 @@ app.post('/public/:id', function (req, res, next) {
     postData += postDataChunk;
   });
   req.addListener("end", function (err) {
-    var obj = JSON.parse(postData);
+    var obj = bodyParse(postData);
+    if (!obj){
+      res.end("Error");
+      return;
+    }
     Publication.findByIdAndUpdate(req.params.id, {name: obj.name, content: obj.content}, function(err, user){
       if(err){
         res.send(err);
@@ -157,17 +174,19 @@ app.post('/public/:id', function (req, res, next) {
 
 });
 
-app.get('/', function(req, res, next){
-  var path = 'index.html';
-  res.sendFile(path, options, function(err) {
-    if (err) next(err);
-  });
-});
 
+// delete publication
 app.delete('/public/:id', function(req, res, next){
   Publication.findByIdAndRemove(req.params.id, function(err) {
     if (err) throw err;
     res.render('Publication deleted!');
+  });
+});
+
+app.get('/', function(req, res, next){
+  var path = 'index.html';
+  res.sendFile(path, options, function(err) {
+    if (err) next(err);
   });
 });
 
@@ -193,7 +212,14 @@ http.createServer(app).listen(config.get('port'), function(){
   console.log('Server listening on port' + config.get('port'));
 });
 
-
+function bodyParse(data){
+  try{
+    var obj = JSON.parse(data);
+    return obj;
+  }catch(e) {
+    console.log(e);
+  }
+}
 
 
 
