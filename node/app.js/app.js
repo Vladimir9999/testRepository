@@ -24,7 +24,6 @@ var app = express();
 var routes = require('./routes/index');
 
 app.use('/', routes);
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -38,7 +37,9 @@ app.set('port', config.get('port'));
 
 
 var User = require('./models/User').User;
-/*-----------add user(PUT)-------------------*/
+var Publication = require('./models/publication').Publication;
+/*-----------add user-------------------*/
+
 app.put('/user',function(req, res, next){
   var postData = "";
   req.addListener("data", function (postDataChunk) {
@@ -46,7 +47,8 @@ app.put('/user',function(req, res, next){
   });
 
   req.addListener("end", function () {
-    var user = new User({'FIO': postData});
+    var obj = JSON.parse(postData);
+    var user = new User({FIO: obj.FIO, publication: obj.publication});
     user.save(function(err, data){
       if(err){
         res.send(err);
@@ -82,7 +84,8 @@ app.post('/user/:id', function (req, res, next) {
     postData += postDataChunk;
   });
   req.addListener("end", function (err) {
-        User.findByIdAndUpdate(req.params.id, {FIO: postData}, function(err, user){
+        var obj = JSON.parse(postData);
+        User.findByIdAndUpdate(req.params.id, {FIO: obj.FIO, publication: obj.publication}, function(err, user){
           if(err){
             res.send(err);
           } else{
@@ -92,11 +95,66 @@ app.post('/user/:id', function (req, res, next) {
   });
 
 });
+
 app.delete('/user/:id', function(req, res, next){
   User.findByIdAndRemove(req.params.id, function(err) {
     if (err) throw err;
     console.log('User deleted!');
   });
+});
+
+/*---------------Publication-------------------*/
+// list publications
+app.get('/public',function (req, res, next) {
+  Publication.find({}, function(err, publications){
+    if(err) return next(err);
+    res.json(publications)
+  })
+});
+
+app.get('/public/:id', function(req, res, next){
+  Publication.findById(req.params.id, function(err, publications){
+    if(err) return next(err);
+    res.json(publications);
+  });
+});
+
+/*-----------add publication-------------------*/
+app.put('/public',function(req, res, next){
+  var postData = "";
+  req.addListener("data", function (postDataChunk) {
+    postData += postDataChunk;
+  });
+
+  req.addListener("end", function () {
+    var obj = JSON.parse(postData);
+    var pub = new Publication({'name': obj.name, 'content': obj.content});
+    pub.save(function(err, data){
+      if(err){
+        res.send(err);
+      } else{
+        res.render('publication added');
+      }
+    });
+  });
+});
+//Update publication
+app.post('/public/:id', function (req, res, next) {
+  var postData = "";
+  req.addListener("data", function (postDataChunk) {
+    postData += postDataChunk;
+  });
+  req.addListener("end", function (err) {
+    var obj = JSON.parse(postData);
+    Publication.findByIdAndUpdate(req.params.id, {name: obj.name, content: obj.content}, function(err, user){
+      if(err){
+        res.send(err);
+      } else{
+        res.render('user added');
+      }
+    });
+  });
+
 });
 
 app.get('/', function(req, res, next){
@@ -106,6 +164,12 @@ app.get('/', function(req, res, next){
   });
 });
 
+app.delete('/public/:id', function(req, res, next){
+  Publication.findByIdAndRemove(req.params.id, function(err) {
+    if (err) throw err;
+    res.render('Publication deleted!');
+  });
+});
 
 app.get('/:id', function(req, res, next){
   var path = req.params.id;
