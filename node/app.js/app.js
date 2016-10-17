@@ -1,3 +1,4 @@
+
 var express = require('express');
 var http  = require('http');
 var path = require('path');
@@ -30,11 +31,27 @@ app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 
+var allowCrossDomain = function(req, res, next) {
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+}
+
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('port', config.get('port'));
-
+app.use(allowCrossDomain);
 
 var User = require('./models/User').User;
 var Publication = require('./models/publication').Publication;
@@ -135,6 +152,7 @@ app.put('/public',function(req, res, next){
   });
 
   req.addListener("end", function () {
+      console.log(postData);
     var obj = bodyParse(postData);
     if (!obj){
       res.end("Error");
