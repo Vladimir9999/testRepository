@@ -22,9 +22,12 @@ var app = express();
 //app.use(bodyParser.urlencoded({ extended: false }));
 //app.use(bodyParser.json({ type: 'application/*+json' }));
 
-var routes = require('./routes/index');
+/* ROUTES */
+var user_route = require('./routes/user'),
+    publication_route = require('./routes/publication');
 
-app.use('/', routes);
+app.use('/user', user_route);
+app.use('/publication', publication_route);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -52,154 +55,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('port', config.get('port'));
 app.use(allowCrossDomain);
-
-var User = require('./models/User').User;
-var Publication = require('./models/publication').Publication;
-/*-----------add user-------------------*/
-
-app.put('/user',function(req, res, next){
-  var postData = "";
-  req.addListener("data", function (postDataChunk) {
-    postData += postDataChunk;
-  });
-
-  req.addListener("end", function () {
-    var obj = bodyParse(postData);
-    if (!obj){
-      res.end("Error");
-      return;
-    }
-    var user = new User({FIO: obj.FIO, publication: obj.publication});
-    user.save(function(err, data){
-      if(err){
-        res.send(err);
-      } else{
-        res.render('user added');
-      }
-    });
-  });
-});
-
-//List users
-
-app.get('/user', function(req, res, next){
-  User.find({}, function(err, users){
-    if(err) return next(err);
-    res.json(users);
-  });
-});
-
-
-app.get('/user/:id', function(req, res, next){
-  User.findById(req.params.id, function(err, user){
-    if(err) return next(err);
-    res.json(user);
-  });
-});
-
-// UPDATE user
-
-app.post('/user/:id', function (req, res, next) {
-  var postData = "";
-  req.addListener("data", function (postDataChunk) {
-    postData += postDataChunk;
-  });
-  req.addListener("end", function (err) {
-        var obj = bodyParse(postData);
-        if (!obj){
-          res.end("Error");
-          return;
-        }
-        User.findByIdAndUpdate(req.params.id, {FIO: obj.FIO, publication: obj.publication}, function(err, user){
-          if(err){
-            res.send(err);
-          } else{
-            res.render('user added');
-          }
-        });
-  });
-
-});
-
-app.delete('/user/:id', function(req, res, next){
-  User.findByIdAndRemove(req.params.id, function(err) {
-    if (err) throw err;
-    console.log('User deleted!');
-  });
-});
-
-/*---------------Publication-------------------*/
-// list publications
-app.get('/public',function (req, res, next) {
-  Publication.find({}, function(err, publications){
-    if(err) return next(err);
-    res.json(publications)
-  })
-});
-
-app.get('/public/:id', function(req, res, next){
-  Publication.findById(req.params.id, function(err, publications){
-    if(err) return next(err);
-    res.json(publications);
-  });
-});
-
-/*-----------add publication-------------------*/
-app.put('/public',function(req, res, next){
-  var postData = "";
-  req.addListener("data", function (postDataChunk) {
-    postData += postDataChunk;
-  });
-
-  req.addListener("end", function () {
-      console.log(postData);
-    var obj = bodyParse(postData);
-    if (!obj){
-      res.end("Error");
-      return;
-    }
-
-    var pub = new Publication({'name': obj.name, 'content': obj.content});
-    pub.save(function(err, data){
-      if(err){
-        res.send(err);
-      } else{
-        res.render('publication added');
-      }
-    });
-  });
-});
-//Update publication
-app.post('/public/:id', function (req, res, next) {
-  var postData = "";
-  req.addListener("data", function (postDataChunk) {
-    postData += postDataChunk;
-  });
-  req.addListener("end", function (err) {
-    var obj = bodyParse(postData);
-    if (!obj){
-      res.end("Error");
-      return;
-    }
-    Publication.findByIdAndUpdate(req.params.id, {name: obj.name, content: obj.content}, function(err, user){
-      if(err){
-        res.send(err);
-      } else{
-        res.render('user added');
-      }
-    });
-  });
-
-});
-
-
-// delete publication
-app.delete('/public/:id', function(req, res, next){
-  Publication.findByIdAndRemove(req.params.id, function(err) {
-    if (err) throw err;
-    res.render('Publication deleted!');
-  });
-});
 
 app.get('/', function(req, res, next){
   var path = 'index.html';
@@ -230,14 +85,7 @@ http.createServer(app).listen(config.get('port'), function(){
   console.log('Server listening on port' + config.get('port'));
 });
 
-function bodyParse(data){
-  try{
-    var obj = JSON.parse(data);
-    return obj;
-  }catch(e) {
-    console.log(e);
-  }
-}
+
 
 
 
