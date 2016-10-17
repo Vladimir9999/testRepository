@@ -80,6 +80,7 @@ app.use(function (err, req, res, next) {
   res.end('ERROR');
 })
 
+
 module.exports = app;
 http.createServer(app).listen(config.get('port'), function(){
   console.log('Server listening on port' + config.get('port'));
