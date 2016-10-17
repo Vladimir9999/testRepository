@@ -3,6 +3,8 @@ var express = require('express');
 var http  = require('http');
 var path = require('path');
 var config = require('config');
+var HttpError = require('error').HttpError;
+
 //var log = require('libs/log')(module);
 
 var favicon = require('serve-favicon');
@@ -10,7 +12,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 
 
-//var bodyParser = require('body-parser');
+var bodyParser = require('body-parser');
 var app = express();
 
 //var multer = require('multer'); // v1.0.5
@@ -18,18 +20,20 @@ var app = express();
 //app.use(express.bodyParser());
 //app.use(bodyParser());
 
-//app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: false }));
-//app.use(bodyParser.json({ type: 'application/*+json' }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-/* ROUTES */
 var user_route = require('./routes/user'),
     publication_route = require('./routes/publication');
 
 app.use('/user', user_route);
 app.use('/publication', publication_route);
+
+
 app.set('views', path.join(__dirname, 'views'));
+
 app.set('view engine', 'ejs');
+app.engine('ejs', require('ejs-mate'));
 
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -57,27 +61,42 @@ app.set('port', config.get('port'));
 app.use(allowCrossDomain);
 
 app.get('/', function(req, res, next){
-  var path = 'index.html';
+    res.render("./template/index");
+  /*var path = './template/index';
   res.sendFile(path, options, function(err) {
-    if (err) next(err);
-  });
+    if (err) next(new HttpError());
+  });*/
 });
 
 app.get('/:id', function(req, res, next){
   var path = req.params.id;
   res.sendFile(path, options, function(err) {
     if (err) {
-      console.log('err');
-      next(err);
+      next(new HttpError());
     }
   });
 });
 
-
+app.use(require('middleware/sendHttperror'));
 
 
 app.use(function (err, req, res, next) {
-  res.end('ERROR');
+  if (typeof err == 'number') {
+      err = new HttpError(err);
+  }
+
+  if (err instanceof HttpError){
+      res.sendHttpError(err);
+  } else {
+      if (app.get('env') == 'development') {
+          res.status(500);
+          res.end('Error'); // ---
+      } else {
+          console.log(err);
+          err = new HttpError(500);
+          res.sendHttpError(err);
+      }
+  }
 })
 
 
