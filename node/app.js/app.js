@@ -22,21 +22,25 @@ var app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 var user_route = require('./routes/user'),
-    publication_route = require('./routes/publication');
+    publication_route = require('./routes/publication'),
+    index_route = require("./routes/index");
 
+
+app.use('/', index_route);
 app.use('/user', user_route);
 app.use('/publication', publication_route);
 
 
-app.set('views', path.join(__dirname, 'views'));
 
-app.set('view engine', 'ejs');
-app.engine('ejs', require('ejs-mate'));
+
+
 
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+//app.use(logger('dev'));
 
 var allowCrossDomain = function(req, res, next) {
   // Website you wish to allow to connect
@@ -60,15 +64,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('port', config.get('port'));
 app.use(allowCrossDomain);
 
-app.get('/', function(req, res, next){
-    res.render("./template/index");
-  /*var path = './template/index';
-  res.sendFile(path, options, function(err) {
-    if (err) next(new HttpError());
-  });*/
-});
 
+
+/*
 app.get('/:id', function(req, res, next){
+
   var path = req.params.id;
   res.sendFile(path, options, function(err) {
     if (err) {
@@ -76,7 +76,7 @@ app.get('/:id', function(req, res, next){
     }
   });
 });
-
+*/
 app.use(require('middleware/sendHttperror'));
 
 
@@ -90,7 +90,7 @@ app.use(function (err, req, res, next) {
   } else {
       if (app.get('env') == 'development') {
           res.status(500);
-          res.end('Error'); // ---
+          res.end('Error!'); // ---
       } else {
           console.log(err);
           err = new HttpError(500);
