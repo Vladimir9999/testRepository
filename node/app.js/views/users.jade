@@ -1,6 +1,5 @@
 extends page
 block body
-    script(type='text/javascript', src='js/client.js')
     div.col-xs-8.col-sm-offset-2.col-md-offset-2
         table.table.table-striped
             thead
@@ -10,4 +9,11 @@ block body
                     th Отчество
                     th Публикация
             tbody.UserList
-
+                tr
+                    - for(var i = 0; i < users.length; i++)
+                      -var fio = users[i].FIO.split(' ');
+                      th= fio[0]
+                      th= fio[1]
+                      th= fio[2]
+                      th= 'Надо подумать'
+                      tr

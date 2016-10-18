@@ -17,8 +17,7 @@ var app = express();
 
 //var multer = require('multer'); // v1.0.5
 //var upload = multer(); // for parsing multipart/form-data
-//app.use(express.bodyParser());
-//app.use(bodyParser());
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -35,12 +34,6 @@ app.use('/user', user_route);
 app.use('/publication', publication_route);
 
 
-
-
-
-
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-//app.use(logger('dev'));
 
 var allowCrossDomain = function(req, res, next) {
   // Website you wish to allow to connect
@@ -65,26 +58,12 @@ app.set('port', config.get('port'));
 app.use(allowCrossDomain);
 
 
-
-/*
-app.get('/:id', function(req, res, next){
-
-  var path = req.params.id;
-  res.sendFile(path, options, function(err) {
-    if (err) {
-      next(new HttpError());
-    }
-  });
-});
-*/
 app.use(require('middleware/sendHttperror'));
-
 
 app.use(function (err, req, res, next) {
   if (typeof err == 'number') {
       err = new HttpError(err);
   }
-
   if (err instanceof HttpError){
       res.sendHttpError(err);
   } else {
@@ -104,15 +83,6 @@ module.exports = app;
 http.createServer(app).listen(config.get('port'), function(){
   console.log('Server listening on port' + config.get('port'));
 });
-
-
-
-
-
-
-
-
-
 
 /*
 // uncomment after placing your favicon in /public
