@@ -4,7 +4,6 @@ block body
     script(src='js/Users.js')
     div.container-fluid
         div.col-lg-2
-
             form#addUs
                 h4 Заполните форму
                 input.form-control#firstname(type="text" placeholder="Фамилия" pattern="^[а-яА-яЁё\s]+$")
@@ -12,7 +11,8 @@ block body
                 input.form-control#middlename(type="text" placeholder="Имя" pattern="^[а-яА-яЁё\s]+$")
 
                 input.form-control#latsname(type="text" placeholder="Отчество" pattern="^[а-яА-яЁё\s]+$")
-                button.btn.btn-success.btnForm(onclick="addUser();") Добавить
+                a(href='http://localhost:3000/user')
+                    button.btn.btn-success.btnForm(onclick="addUser();") Добавить
                 button.btn.btn-danger.btnForm(onclick="hiddenForm();") Отмена
         div.col-lg-8
             table.table.table-hover.table-striped
@@ -36,6 +36,7 @@ block body
                               td
                                   button.btn.btn-xs(onclick="updateUser("+i+");")
                                     span.glyphicon.glyphicon-pencil(aria-hidden="true")
-                                  button.del.btn.btn-xs(onclick="deleteUser("+i+");")
-                                    span.glyphicon.glyphicon-remove.text-danger(aria-hidden="true")
+                                  a(href='http://localhost:3000/user')
+                                      button.del.btn.btn-xs(onclick="deleteUser("+i+");")
+                                        span.glyphicon.glyphicon-remove.text-danger(aria-hidden="true")
 
