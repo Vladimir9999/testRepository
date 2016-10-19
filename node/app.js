@@ -5,7 +5,6 @@ var path = require('path');
 var config = require('config');
 var HttpError = require('error').HttpError;
 
-//var log = require('libs/log')(module);
 
 var favicon = require('serve-favicon');
 var logger = require('morgan');
