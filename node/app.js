@@ -6,7 +6,7 @@ var config = require('./config');
 var HttpError = require('./error').HttpError;
 
 var favicon = require('serve-favicon');
-var logger = require('morgan');
+//var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 
 
