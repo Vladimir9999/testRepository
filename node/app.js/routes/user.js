@@ -7,10 +7,8 @@ var User = require('../models/User').User;
 router.get('/', function (req, res, next) {
     User.find({}, function (err, users) {
         if (err) return next(err);
-        //res.json(users);
         res.render("users", {users: users});
     });
-
 });
 
 router.get('/:id', function (req, res, next) {
@@ -22,6 +20,7 @@ router.get('/:id', function (req, res, next) {
 
 /* ADD User*/
 router.put('/', function (req, res, next) {
+
     if (!req.body) {
         next(err);
     }

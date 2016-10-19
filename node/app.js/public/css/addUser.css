@@ -1,0 +1,13 @@
+
+#addUs {
+    padding-top: 5%;
+    visibility: hidden;
+}
+
+#addUs .form-control {
+    margin-bottom: 15px;
+}
+
+.btnForm{
+    margin-left: 3%;
+}
