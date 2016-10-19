@@ -2,9 +2,8 @@
 var express = require('express');
 var http  = require('http');
 var path = require('path');
-var config = require('config');
-var HttpError = require('error').HttpError;
-
+var config = require('./config');
+var HttpError = require('./error').HttpError;
 
 var favicon = require('serve-favicon');
 var logger = require('morgan');
