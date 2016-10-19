@@ -55,7 +55,7 @@ app.set('port', config.get('port'));
 app.use(allowCrossDomain);
 
 
-app.use(require('middleware/sendHttperror'));
+app.use(require('./middleware/sendHttperror'));
 
 app.use(function (err, req, res, next) {
   if (typeof err == 'number') {
