@@ -1,5 +1,4 @@
 extends page
-
 block body
     link(href='css/addUser.css', rel='stylesheet')
     script(src='js/Users.js')
@@ -16,7 +15,7 @@ block body
                     button.btn.btn-success.btnForm(onclick="addUser();") Добавить
                 button.btn.btn-danger.btnForm(onclick="hiddenForm();") Отмена
         div.col-lg-8
-            table.table.table-hover.table-striped
+            table.table.table-hover
                 thead
                     tr
                         th Фамилия
@@ -35,7 +34,7 @@ block body
                               td= fio[2]
                               td(id=i)= users[i]._id
                               td
-                                  button.btn.btn-xs(onclick="updateUser("+i+");")
+                                  button.edit.btn.btn-xs(onclick="updateUser("+i+");")
                                     span.glyphicon.glyphicon-pencil(aria-hidden="true")
                                   a(href='http://localhost:3000/user')
                                       button.del.btn.btn-xs(onclick="deleteUser("+i+");")

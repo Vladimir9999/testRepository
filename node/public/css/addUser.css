@@ -11,3 +11,7 @@
 .btnForm{
     margin-left: 3%;
 }
+
+button.edit {
+    margin-right: 5px;
+}
