@@ -1,0 +1,70 @@
+body{
+    background-color: #f7f8f1;
+    padding-top: 4%;
+}
+.navbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+main{
+    min-height: 550px;
+    max-width: 60%;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.5);
+}
+
+#searchProperty {
+
+}
+
+.propertyCross {
+    cursor: default;
+    border: 3px black;
+    margin-left: 5%;
+    margin-top: 5px;
+    max-width: 85%;
+    min-height: 150px;
+    border-radius: 4px;
+    background-color: #f7f8f1;
+
+}
+.propertyCross:hover {
+    background-color: #ffffff;
+}
+.textContainer{
+    width: 50%;
+    margin-left: 2%;
+    margin-top: 3%;
+    overflow-wrap: break-word;
+}
+.price {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+
+    color: white;
+    border: solid #5e5e5e;
+    border-radius: 3px;
+    background-color: #5e5e5e;
+}
+img {
+    max-length: 150px;
+    max-width: 150px;
+    margin-top: 3%;
+    margin-left: 15px;
+    border-radius: 4px;
+}
+li img, li div {
+    display: inline-block;
+    vertical-align: top;
+
+}
+#title {
+    margin-left: 10%;
+    padding-top: 20px;
+}
