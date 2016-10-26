@@ -12,6 +12,7 @@
     <link href="css/style.css" , rel="stylesheet">
     <script src="js/Model.js" type="text/javascript"></script>
     <script src="js/PropertyView.js" type="text/javascript"></script>
+    <script src="js/ModelView.js" type="text/javascript"></script>
     <script src="js/Router.js" type="text/javascript"></script>
     <script src="js/main.js" type="text/javascript"></script>
 
@@ -53,7 +54,7 @@
         <h2 id="title">
         </h2>
     </div>
-    <div id="listProperty" class="hero-unit">
+    <div id="model_Property" class="hero-unit">
     </div>
     <div id="searchProperty" class="hero-unit">
         <ul id="propertyList" type="none">
@@ -61,20 +62,36 @@
         </ul>
     </div>
     <div id="favesProperty" class="hero-unit">
-        <h2>Favorite</h2>
+        <ul id="faves_list" type="none">
+
+        </ul>
     </div>
 </main>
 
 <script type="text/template" id="property_template">
-        <img alt="/img/ico.jpg" src=<%= img_url %>>
-        <div class="textContainer">
-            <div class="price"><span>$<%= price %></span></div>
-            <h4><%= title %></h4>
-            <span>bathrooms: <%= bathroom_number %> bed: <%= bedroom_number%></span>
-        </div>
+
+            <img alt="/img/ico.jpg" src=<%= img_url %>>
+            <div class="textContainer">
+                <div class="price"><span>$<%= price %></span></div>
+                <h4><%= title %></h4>
+                <span>bathrooms: <%= bathroom_number %> bed: <%= bedroom_number%></span>
+            </div>
+
+</script>
+<script type="text/template" id="model_template">
+
+    <img alt="/img/ico.jpg" src=<%= img_url %>>
+    <div class="textContainer">
+        <h1>$<%= price %></h1>
+        <h5>Price high: <%= price_high %>, Price low: <%= price_low %> </h5><br>
+        <h5>bathrooms: <%= bathroom_number %> bed: <%= bedroom_number%> Property type:<%=  property_type %></h5><br>
+        <h5><%= keywords %></h5>
+    </div>
+    <button class="btn btn-default addFav" onclick="addFaves();">Add Faves</button>
 
 </script>
 
 
 </body>
 </html>
+
