@@ -1,5 +1,9 @@
-var lUrl = 'http://api.nestoria.com.br/api?encoding=json&pretty=1&action=search_listings&country=br&listing_type=buy&place_name=';
+
 'use strict';
+
+var lUrl = 'http://api.nestoria.com.br/api?encoding=json&pretty=1&action=search_listings&country=br&listing_type=buy&place_name=';
+var prop_col = new Properties();
+
 
 function getModels(location){
     $.get(lUrl + location, function (data) {
@@ -7,15 +11,15 @@ function getModels(location){
             $("#title").text("Location not found!");
             return;
         }
-        let prop_col = new Properties(data["response"].listings);
-        for (let i = 1; i < prop_col.length; i++) {
+        prop_col.reset(data["response"].listings);
+        prop_col.forEach((val, valueAgain, prop_col) => {
             let view = new PropertyView({
                 $el: "#searchProperty",
-                model: prop_col.get('c' + i)
+                model: val
             });
             $("#propertyList").append(view.el);
-        }
-    })
+        });
+    });
     $("#title").text("Property in " + location);
 }
 
@@ -39,8 +43,10 @@ var Router = Backbone.Router.extend({
         $('#listProperty').show();
     },
     search: function (query) {
+
         $('.hero-unit').hide();
         $('#searchProperty').show();
+        $('#propertyList').html(" ");
         if (query){
             getModels(query);
         }else {
