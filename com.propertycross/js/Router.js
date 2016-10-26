@@ -48,11 +48,11 @@ function getModels(location) {
 var Router = Backbone.Router.extend({
     routes: {
         "": "home",
-        "property/:query": "property",
-        "search": "search",
-        "search/:query": "search",
-        "faves": "faves",
-        "faves/:query": "faves"
+        "property/:query"   : "property",
+        "search"            : "search",
+        "search/:query"     : "search",
+        "faves"             : "faves",
+        "faves/:query"      : "faves"
     },
     initialize: function () {
         Backbone.history.start({pushState: false});
@@ -80,12 +80,7 @@ var Router = Backbone.Router.extend({
         if (query) {
             getModels(query);
         } else {
-            let location = $('#input').val();
-            if (!location) {
-                $("#title").text("Location not found!");
-                return;
-            }
-            getModels(location);
+            $("#title").text("ERROR!");
         }
     },
     faves: function (query) {
