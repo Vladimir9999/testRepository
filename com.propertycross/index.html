@@ -70,12 +70,12 @@
 
 <script type="text/template" id="property_template">
 
-            <img alt="/img/ico.jpg" src=<%= img_url %>>
-            <div class="textContainer">
-                <div class="price"><span>$<%= price %></span></div>
-                <h4><%= title %></h4>
-                <span>bathrooms: <%= bathroom_number %> bed: <%= bedroom_number%></span>
-            </div>
+    <img alt="/img/ico.jpg" src=<%= img_url %>>
+    <div class="textContainer">
+        <div class="price"><span>$<%= price %></span></div>
+        <h4><%= title %></h4>
+        <span>bathrooms: <%= bathroom_number %> bed: <%= bedroom_number%></span>
+    </div>
 
 </script>
 <script type="text/template" id="model_template">
@@ -84,7 +84,7 @@
     <div class="textContainer">
         <h1>$<%= price %></h1>
         <h5>Price high: <%= price_high %>, Price low: <%= price_low %> </h5><br>
-        <h5>bathrooms: <%= bathroom_number %> bed: <%= bedroom_number%> Property type:<%=  property_type %></h5><br>
+        <h5>bathrooms: <%= bathroom_number %> bed: <%= bedroom_number%>; Property type:<%= property_type %></h5><br>
         <h5><%= keywords %></h5>
     </div>
     <button class="btn btn-default addFav" onclick="addFaves();">Add Faves</button>
