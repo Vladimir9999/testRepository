@@ -1,46 +1,59 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
-import { PropertyService } from './property.service';
-import { ActivatedRoute } from '@angular/router'
+import {Component, OnInit, OnChanges, Input} from '@angular/core';
+import {PropertyService} from './property.service';
+import { ActivatedRoute, Params }   from '@angular/router';
 
 
 @Component({
+    moduleId: module.id,
     selector: 'propList',
-    template: `
-        <h2 class="title">Results found for "{{name_location}}" </h2>
-        <ul *ngFor="let val of property" type="none">
-            <li class="propertyCross">
-                <img alt="/img/ico.jpg" src={{val.img_url}}>
-                <div class="textContainer">
-                    <div class="price"><span>\${{val.price}}</span></div>
-                    <h4>{{val.title}}</h4>
-                    <span>bathrooms: {{val.bathroom_number}} bed: {{val.bedroom_number}}</span>
-                </div>
-            </li>         
-        </ul>
-     
-    `,
+    templateUrl: './templates/property.component.html',
     inputs: ['tmp']
-  
+
 })
-export class PropertyComponent implements OnChanges {
-    
-    property = [];
-    name_location: string;
-    tmp: String;
+export class PropertyComponent implements OnChanges, OnInit {
 
-    constructor(private _propertyService: PropertyService){}
+    private property;
+    private OneProperty;
+    private name_location: string;
+    private tmp: String;
+    private prop_visible_flag = true;
 
-    ngOnChanges(obj) {
-       if (this.tmp) {
-           this.name_location = this.tmp.toString();
-           this.getProperty(this.tmp);
-       }
+    constructor(
+        private _propertyService: PropertyService, 
+        private route: ActivatedRoute
+        ) {}
+
+    ngOnChanges() {
+        this.OneProperty = undefined;
+        if (this.tmp) {
+            this.name_location = this.tmp.toString();
+            this.getProperty(this.tmp, '1');
+        }
 
     }
-    getProperty(location){
-         console.log("location - " + location);
-         this._propertyService
-            .getProperty(location)
+    ngOnInit(){
+        this.route.params.forEach((params: Params) => {
+            let num_page = +params['id'];
+            //this.getProperty(this.tmp, num_page);
+            //  Добавить в HTML [routerLink]="['/detail', hero.id]"
+        });
+    }
+    getProperty(location, num_page) {
+        this._propertyService
+            .getProperty(location, num_page)
             .then(property => this.property = property);
+    }
+
+    viewOneProperty(prop) {
+        this.OneProperty = prop;
+        this.prop_visible_flag = false;
+    }
+
+    private addFav(prop) {
+        this.prop_visible_flag = true;
+        this._propertyService.setFavesProperty(prop);
+    }
+    private goBack(){
+        this.prop_visible_flag = true;
     }
 }

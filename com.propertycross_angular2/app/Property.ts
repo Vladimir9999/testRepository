@@ -6,4 +6,5 @@ export class Property {
     img_url: string;
     bathroom_number: number;
     bedroom_number: number;
+
 }

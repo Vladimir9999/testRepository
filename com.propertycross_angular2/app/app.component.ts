@@ -1,21 +1,20 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {Router} from '@angular/Router';
 
 
 
-
-//styleUrls: ['./app.component.css']
 @Component({
-  moduleId: module.id,
-  selector: 'appComponent',
-  templateUrl: 'appComponent.html'
+    moduleId: module.id,
+    selector: 'appComponent',
+    templateUrl: './templates/appComponent.html'
 })
 
 export class AppComponent {
 
-  location1: String = '';
+    location: String = '';
 
-  getLocation(location){
-    this.location1 = location;
-    
-  }
+    getLocation(name_location) {
+        this.location = name_location;
+    }
+
 }
